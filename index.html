@@ -1,0 +1,917 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#170a20">
+<title>Our Little World ♥</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+ --dark:#170a20;
+ --wine:#70203f;
+ --purple:#35163e;
+ --pink:#e9a5c0;
+ --soft:#f9e7ef;
+ --gold:#c99aab;
+}
+
+html,body{
+ margin:0;
+ width:100%;
+ height:100%;
+ overflow:hidden;
+}
+
+body{
+ background:
+ radial-gradient(ellipse at 50% 0%,#57213b 0%,transparent 55%),
+ radial-gradient(ellipse at 90% 100%,#35143d 0%,transparent 55%),
+ linear-gradient(145deg,#100715,#25102c 55%,#100715);
+ color:var(--soft);
+ font-family:Georgia,serif;
+}
+
+button{font-family:inherit}
+
+#background{
+ position:fixed;
+ inset:0;
+ overflow:hidden;
+ pointer-events:none;
+ z-index:0;
+}
+
+.floating{
+ position:absolute;
+ bottom:-55px;
+ color:#a72d58;
+ opacity:0;
+ text-shadow:0 0 13px #c04477;
+ animation:floatHeart linear infinite;
+}
+
+@keyframes floatHeart{
+ 0%{transform:translateY(0) rotate(0);opacity:0}
+ 15%{opacity:.65}
+ 85%{opacity:.55}
+ 100%{transform:translateY(-115vh) rotate(45deg);opacity:0}
+}
+
+#app{
+ position:relative;
+ z-index:1;
+ height:100dvh;
+ width:100%;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ padding:
+ max(12px,env(safe-area-inset-top))
+ 13px
+ max(10px,env(safe-area-inset-bottom));
+}
+
+.header{
+ text-align:center;
+ flex-shrink:0;
+ padding:5px 0 10px;
+}
+
+.header-title{
+ color:var(--pink);
+ font-size:12px;
+ letter-spacing:3px;
+}
+
+.progress{
+ display:flex;
+ justify-content:center;
+ gap:7px;
+ margin-top:10px;
+}
+
+.progress span{
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:#60354e;
+ transition:.3s;
+}
+
+.progress span.active{
+ background:#f0a6c1;
+ box-shadow:0 0 12px #e98eaf;
+}
+
+#book{
+ position:relative;
+ flex:1;
+ min-height:0;
+ width:100%;
+ max-width:580px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ perspective:1100px;
+}
+
+.page{
+ display:none;
+ position:relative;
+ width:100%;
+ max-height:100%;
+ min-height:0;
+}
+
+.page.active{
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ animation:turnPage .48s ease both;
+}
+
+.page.next-turn{
+ transform-origin:left center;
+}
+
+.page.previous-turn{
+ transform-origin:right center;
+}
+
+@keyframes turnPage{
+ 0%{
+  opacity:.2;
+  transform:rotateY(-9deg) translateX(20px);
+ }
+ 100%{
+  opacity:1;
+  transform:rotateY(0) translateX(0);
+ }
+}
+
+.paper{
+ position:relative;
+ width:100%;
+ max-height:100%;
+ overflow:hidden;
+ border-radius:8px 20px 20px 8px;
+ border:1px solid #94516f;
+ background:
+ linear-gradient(90deg,#170c20 0,#32182f 5px,#27132e 14px,#24122b 100%);
+ box-shadow:
+ 0 14px 40px #0008,
+ inset 5px 0 12px #0005,
+ 0 0 24px #9d315022;
+ padding:clamp(14px,3vh,27px) clamp(13px,4vw,24px);
+ text-align:center;
+}
+
+.paper:before{
+ content:"";
+ position:absolute;
+ top:0;
+ bottom:0;
+ right:10px;
+ width:1px;
+ background:#9e526c55;
+}
+
+.cover{
+ min-height:min(65vh,510px);
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+}
+
+.cover .ornament{
+ color:#d78aa9;
+ font-size:36px;
+ margin:10px;
+}
+
+.cover h1{
+ font-size:clamp(36px,10vw,58px);
+ color:#e8a2bd;
+ text-shadow:0 0 25px #9b2856;
+ margin:12px 0;
+}
+
+.cover .intro{
+ color:#f2cfdd;
+ font-size:clamp(16px,4vw,20px);
+ line-height:2;
+ white-space:pre-line;
+ margin:15px 0;
+}
+
+.cover .small{
+ color:#bb8ca7;
+ font-size:12px;
+ letter-spacing:2px;
+}
+
+h2{
+ color:var(--pink);
+ font-size:clamp(20px,5vw,27px);
+ margin:5px 0 13px;
+}
+
+p{
+ font-size:clamp(14px,3.8vw,17px);
+ line-height:1.8;
+ margin:8px 0;
+}
+
+.muted{
+ color:#bc95ae;
+ font-size:12px;
+}
+
+.ornament{
+ font-size:30px;
+ margin:3px;
+}
+
+.btn{
+ border:1px solid #ad597b;
+ border-radius:28px;
+ padding:10px 15px;
+ color:#fff0f6;
+ background:linear-gradient(130deg,#7e2448,#482052);
+ cursor:pointer;
+ font-size:14px;
+ transition:transform .2s,box-shadow .2s;
+}
+
+.btn:active{transform:scale(.96)}
+
+.btn.primary{
+ background:linear-gradient(130deg,#9b315b,#62265d);
+ box-shadow:0 0 15px #a6336025;
+}
+
+.btn:focus-visible{
+ outline:2px solid #f0b1ca;
+ outline-offset:3px;
+}
+
+.message{
+ display:none;
+ background:#6b24431f;
+ border:1px solid #98507177;
+ border-radius:13px;
+ color:#f5c3d6;
+ padding:10px;
+ margin-top:10px;
+ font-size:14px;
+ line-height:1.8;
+ white-space:pre-line;
+ animation:showMessage .35s ease;
+}
+
+.message.show{display:block}
+
+@keyframes showMessage{
+ from{opacity:0;transform:translateY(7px)}
+ to{opacity:1;transform:translateY(0)}
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-top:10px;
+}
+
+.choice{
+ width:100%;
+ min-height:49px;
+ padding:8px;
+ font-size:13px;
+}
+
+.question-count{
+ color:#c89bb5;
+ font-size:12px;
+ margin-bottom:7px;
+}
+
+.datebox{
+ background:#56223d55;
+ border:1px solid #854561;
+ border-radius:13px;
+ padding:9px;
+ margin:7px 0;
+}
+
+.datebox strong{
+ display:block;
+ color:#f0a9c4;
+ font-size:clamp(17px,5vw,25px);
+ margin:4px;
+}
+
+.mood-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-top:10px;
+}
+
+.mood{
+ width:100%;
+ min-height:43px;
+ padding:8px;
+ font-size:13px;
+}
+
+.memory-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:8px;
+ margin-top:12px;
+}
+
+.memory{
+ min-height:75px;
+ padding:6px 3px;
+ border-radius:13px;
+ font-size:12px;
+}
+
+.memory span{
+ display:block;
+ font-size:24px;
+ margin-bottom:5px;
+}
+
+.divider{
+ width:48px;
+ height:1px;
+ background:#b05c7d;
+ margin:13px auto;
+}
+
+.navigation{
+ flex-shrink:0;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ width:100%;
+ max-width:580px;
+ gap:10px;
+ padding-top:10px;
+}
+
+.navigation button{
+ min-width:95px;
+}
+
+.navigation button:disabled{
+ opacity:.25;
+ cursor:default;
+}
+
+.navigation .number{
+ color:#c19bb0;
+ font-size:12px;
+}
+
+.footer{
+ flex-shrink:0;
+ padding-top:8px;
+ text-align:center;
+ font-size:10px;
+ letter-spacing:2px;
+ color:#a77d99;
+}
+
+#toast{
+ position:fixed;
+ bottom:20px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:5;
+ display:none;
+ background:#51203f;
+ border:1px solid #b75b81;
+ border-radius:20px;
+ padding:10px 16px;
+ width:max-content;
+ max-width:90%;
+ font-size:13px;
+ text-align:center;
+}
+
+@media(max-height:650px){
+ .header{padding:0 0 5px}
+ .paper{padding:10px 13px}
+ p{line-height:1.55;margin:5px 0}
+ .datebox{padding:6px;margin:4px 0}
+ .memory{min-height:60px}
+ .navigation{padding-top:5px}
+ .cover{min-height:55vh}
+}
+
+@media(max-width:350px){
+ #app{padding-left:8px;padding-right:8px}
+ .paper{padding:10px}
+ .btn{padding:9px 10px;font-size:12px}
+ .memory{font-size:11px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ .floating{animation:none;display:none}
+ .page.active{animation:none}
+}
+</style>
+</head>
+
+<body>
+
+<div id="background"></div>
+
+<div id="app">
+
+<header class="header">
+ <div class="header-title">A BOOK MADE WITH LOVE ♥</div>
+ <div class="progress" id="progress"></div>
+</header>
+
+<main id="book">
+
+<!-- 0: BOOK COVER -->
+<section class="page active" data-index="0">
+ <div class="paper cover">
+  <div class="ornament">♥ 💋 ♥</div>
+  <div class="small">OUR LITTLE WORLD</div>
+  <h1>My Love</h1>
+  <p class="intro" id="introText"></p>
+  <div class="divider"></div>
+  <p class="muted">A story written just for you...</p>
+  <button class="btn primary" onclick="startBook()" id="startButton">
+   افتح كتابنا ❤️
+  </button>
+  <div class="ornament">🥀</div>
+ </div>
+</section>
+
+<!-- 1: LOVE LETTER -->
+<section class="page" data-index="1">
+ <div class="paper">
+  <div class="ornament">💌</div>
+  <h2>رسالة ليك يا حبيبي</h2>
+  <p id="mainLetter"></p>
+  <div class="divider"></div>
+  <p class="muted">كل كلمة هنا طالعة من قلبي ليك.</p>
+  <div class="ornament">💋</div>
+ </div>
+</section>
+
+<!-- 2: QUESTIONS -->
+<section class="page" data-index="2">
+ <div class="paper">
+  <div class="ornament">💋</div>
+  <h2>تعالى نلعب شوية</h2>
+  <div class="question-count" id="questionCount"></div>
+  <p id="questionText"></p>
+  <div class="grid" id="choices"></div>
+  <div class="message" id="questionAnswer"></div>
+  <button class="btn primary" id="nextQuestion" onclick="nextQuestion()">
+   السؤال التالي ←
+  </button>
+  <p class="muted">اختار إجابتك وشوف رسالتك ❤️</p>
+ </div>
+</section>
+
+<!-- 3: IMPORTANT DATES -->
+<section class="page" data-index="3">
+ <div class="paper">
+  <div class="ornament">📅</div>
+  <h2>تواريخ محفورة في قلبي</h2>
+
+  <div class="datebox">
+   🎂 يوم ميلادك
+   <strong id="birthday"></strong>
+   <span class="muted" id="birthdayMessage"></span>
+  </div>
+
+  <div class="datebox">
+   ❤️ يوم ما اتعرفنا
+   <strong id="meetingDate"></strong>
+  </div>
+
+  <div class="datebox">
+   ⏳ بقالنا مع بعض
+   <strong id="daysTogether"></strong>
+   <span class="muted">يوم من حكايتنا</span>
+  </div>
+ </div>
+</section>
+
+<!-- 4: MOOD MESSAGES -->
+<section class="page" data-index="4">
+ <div class="paper">
+  <div class="ornament">🥀</div>
+  <h2>لما تحس إنك...</h2>
+  <p class="muted">اختار إحساسك، عندي ليك رسالة.</p>
+  <div class="mood-grid" id="moods"></div>
+  <div class="message" id="moodMessage"></div>
+ </div>
+</section>
+
+<!-- 5: MEMORIES -->
+<section class="page" data-index="5">
+ <div class="paper">
+  <div class="ornament">🎁</div>
+  <h2>صناديق ذكرياتنا</h2>
+  <p class="muted">كل صندوق جواه حكاية صغيرة من حكايتنا.</p>
+  <div class="memory-grid" id="memories"></div>
+  <div class="message" id="memoryMessage"></div>
+ </div>
+</section>
+
+<!-- 6: FINAL LETTER -->
+<section class="page" data-index="6">
+ <div class="paper">
+  <div class="ornament">❤️‍🔥</div>
+  <h2>آخر صفحة... مش آخر الحكاية</h2>
+  <p id="finalLetter"></p>
+  <div class="divider"></div>
+  <p class="muted">In every lifetime, I choose you.</p>
+  <div class="ornament">💋</div>
+  <button class="btn primary" id="musicButton" onclick="toggleMusic()">
+   ▶ شغّل أغنيتنا
+  </button>
+  <audio id="music" src="song.mp3" preload="none" loop></audio>
+ </div>
+</section>
+
+</main>
+
+<nav class="navigation" id="navigation" hidden>
+ <button class="btn" id="previous" onclick="changePage(-1)">→ السابق</button>
+ <span class="number" id="pageNumber"></span>
+ <button class="btn primary" id="next" onclick="changePage(1)">التالي ←</button>
+</nav>
+
+<footer class="footer">MADE WITH LOVE · ONLY FOR YOU ♥</footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ==========================================
+   ❤️❤️ منطقة التعديل الخاصة بيكي ❤️❤️
+   عدلي الكلام والتواريخ من هنا فقط
+========================================== */
+
+const DATA = {
+
+ // جملة غلاف الكتاب
+ introText:
+ "في حكايات كتير في الدنيا، بس دي حكايتي المفضلة...\nحكاية أنا وإنت. ❤️",
+
+ startButton:
+ "افتح كتابنا ❤️",
+
+ // أول رسالة
+ mainLetter:
+ `حبيبي...
+مش عارفة أبدأ منين، بس عايزة تعرف إنك من أجمل الحاجات اللي حصلتلي.
+وجودك في حياتي فرق معايا، وضحكتك بتفرق في يومي.
+بحب تفاصيلك الصغيرة، وبحب إنك إنت.
+ونفسي أفضل أختارك كل يوم من جديد. ❤️💋`,
+
+ // اكتبي التواريخ هنا بالشكل YYYY-MM-DD
+ birthday: "2000-01-01",
+ meeting: "2025-01-01",
+
+ birthdayMessage:
+ "كل سنة وإنت أجمل حاجة في حياتي. ❤️",
+
+ // خمس أسئلة، وكل سؤال له اختيارين ورسالتين
+ questions: [
+  {
+   text:"لو أنا جنبك دلوقتي، تختار إيه؟",
+   options:[
+    ["حضن طويل 🫂","حضنك بالنسبالي أمان الدنيا كلها. نفسي أفضل جواه ومخرجش أبدًا. ❤️"],
+    ["بوسة كتير 💋","طب تعالى خد كل البوسات اللي الدنيا فيها، دي كلها ليك إنت."]
+   ]
+  },
+  {
+   text:"لو رجع بيك الزمن، هتختارني تاني؟",
+   options:[
+    ["كل مرة ❤️","وأنا كمان هختارك في كل مرة، من غير أي تردد."],
+    ["مش محتاج أفكر 💜","خلاص اتفقنا، إحنا لبعض مهما حصل."]
+   ]
+  },
+  {
+   text:"نفسك نكون فين سوا؟",
+   options:[
+    ["على البحر 🌙","وأنا جنبك والبحر قدامنا، مش محتاجة من الدنيا أكتر من كده."],
+    ["في بيتنا 🏡","بيت صغير مليان ضحك وحب، وأهم حاجة إنك تكون فيه."]
+   ]
+  },
+  {
+   text:"إيه أكتر حاجة بتحبها فينا؟",
+   options:[
+    ["ضحكتنا سوا 🥹","ضحكتك من الأصوات اللي نفسي أسمعها كل يوم."],
+    ["إننا لبعض ❤️","وأنا بحب إحساس إن عندي حد أرجعله وأحكيله كل حاجة."]
+   ]
+  },
+  {
+   text:"وعدني بحاجة؟",
+   options:[
+    ["نفضل نختار بعض 💍","وعد مني إني أفضل أحاول أخلي حكايتنا أحلى كل يوم."],
+    ["منسيبش إيد بعض 🤝","أتمنى نفضل دايمًا سند وأمان لبعض."]
+   ]
+  }
+ ],
+
+ // الرسائل حسب إحساسه
+ moods:[
+  ["زعلان 🥺","حتى لو يومك صعب، افتكر إن في حد بيحبك وبيتمنى يشوفك مبسوط. مش لازم تبقى قوي طول الوقت، أنا جنبك."],
+  ["وحشتني 💋","إنت كمان واحشني بطريقة مش عارفة أوصفها. نفسي أشوفك وأفضل جنبك شوية طويلة."],
+  ["تعبان 🫂","خد نفس وارتاح يا حبيبي. مش مطلوب منك تعمل كل حاجة مرة واحدة. أتمنى أقدر أخفف عنك ولو شوية."],
+  ["حاسس بالوحدة 💜","إنت مش لوحدك، حتى لو المسافات بعيدة. في قلب بيفتكرَك وبيحبك."],
+  ["مبسوط 😍","يا رب ضحكتك متغيبش عن وشك أبدًا. فرحتك عندي بالدنيا كلها."],
+  ["محتاج حب ❤️","تعالى خد جرعة حب غير محدودة، إنت تستاهل كل الحنية اللي في الدنيا."]
+ ],
+
+ // الذكريات الستة
+ memories:[
+  ["أول مرة اتكلمنا","هنا اكتبي حكاية أول مرة اتكلمتوا فيها. ❤️"],
+  ["أول مقابلة","اكتبي تفاصيل أول مرة شوفتوا بعض فيها. 🥹"],
+  ["أحلى خروجة","اكتبي حكاية أحلى يوم خرجتوا فيه. 🌹"],
+  ["أجمل ضحكة","اكتبي موقف ضحكتوا فيه من قلبكم. 😂"],
+  ["لحظة مميزة","اكتبي موقف مستحيل تنسيه. 💋"],
+  ["ذكرى خاصة","اكتبي ذكرى محدش يعرف قيمتها غيركم. 💜"]
+ ],
+
+ // آخر رسالة
+ finalLetter:
+ `لو وصلت لآخر صفحة، عايزة أقولك إن كل كلمة هنا معمولة مخصوص ليك.
+يمكن مش بعرف أعبّر كل يوم عن كل اللي جوايا، بس إنت غالي عندي أكتر من الكلام.
+نفسي نعيش ذكريات كتير، ونكبر سوا، ونفضل نضحك ونحب ونختار بعض.
+بحبك يا حبيبي، ودي حكايتنا اللي نفسي متخلصش. ❤️💋`
+};
+
+
+/* ==========================================
+   ❤️ تشغيل الموقع - لا تعدلي الجزء ده
+========================================== */
+
+const $ = id => document.getElementById(id);
+
+function setText(id,value){
+ $(id).textContent=value;
+}
+
+setText("introText",DATA.introText);
+setText("startButton",DATA.startButton);
+setText("mainLetter",DATA.mainLetter);
+setText("finalLetter",DATA.finalLetter);
+setText("birthdayMessage",DATA.birthdayMessage);
+
+const pages=[...document.querySelectorAll(".page")];
+let currentPage=0;
+
+const progress=$("progress");
+
+pages.forEach(()=>{
+ const dot=document.createElement("span");
+ progress.appendChild(dot);
+});
+
+function updatePage(direction=1){
+ pages.forEach((page,index)=>{
+  page.classList.toggle("active",index===currentPage);
+  page.classList.remove("next-turn","previous-turn");
+ });
+
+ const active=pages[currentPage];
+ if(currentPage!==0){
+  active.classList.add(direction>=0?"next-turn":"previous-turn");
+ }
+
+ [...progress.children].forEach((dot,index)=>{
+  dot.classList.toggle("active",index===currentPage);
+ });
+
+ $("navigation").hidden=currentPage===0;
+ $("pageNumber").textContent=(currentPage)+" / "+(pages.length-1);
+ $("previous").disabled=currentPage===1;
+ $("next").disabled=currentPage===pages.length-1;
+}
+
+function startBook(){
+ currentPage=1;
+ updatePage(1);
+}
+
+function changePage(direction){
+ const nextPage=currentPage+direction;
+ if(nextPage<1 || nextPage>=pages.length)return;
+ currentPage=nextPage;
+ updatePage(direction);
+}
+
+/* التواريخ */
+
+function parseDate(value){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(value))return null;
+
+ const parts=value.split("-").map(Number);
+ const date=new Date(parts[0],parts[1]-1,parts[2],12);
+
+ if(
+  date.getFullYear()!==parts[0] ||
+  date.getMonth()!==parts[1]-1 ||
+  date.getDate()!==parts[2]
+ )return null;
+
+ return date;
+}
+
+function formatDate(date){
+ if(!date)return "أضيفي التاريخ";
+ return date.toLocaleDateString("ar-EG",{
+  year:"numeric",
+  month:"long",
+  day:"numeric"
+ });
+}
+
+const birthday=parseDate(DATA.birthday);
+const meeting=parseDate(DATA.meeting);
+
+setText("birthday",formatDate(birthday));
+setText("meetingDate",formatDate(meeting));
+
+if(meeting){
+ const today=new Date();
+ today.setHours(12,0,0,0);
+ const elapsed=Math.floor((today-meeting)/86400000);
+
+ setText(
+  "daysTogether",
+  elapsed>=0 ? elapsed.toLocaleString("ar-EG")+" يوم" : "التاريخ لسه مجاش"
+ );
+}else{
+ setText("daysTogether","أضيفي التاريخ");
+}
+
+/* الأسئلة */
+
+let questionIndex=0;
+
+function renderQuestion(){
+ const question=DATA.questions[questionIndex];
+
+ setText(
+  "questionCount",
+  "السؤال "+(questionIndex+1)+" من "+DATA.questions.length
+ );
+
+ setText("questionText",question.text);
+
+ const choices=$("choices");
+ choices.replaceChildren();
+
+ $("questionAnswer").classList.remove("show");
+ $("questionAnswer").textContent="";
+
+ question.options.forEach(option=>{
+  const button=document.createElement("button");
+  button.className="btn choice";
+  button.textContent=option[0];
+
+  button.addEventListener("click",()=>{
+   setText("questionAnswer",option[1]);
+   $("questionAnswer").classList.add("show");
+  });
+
+  choices.appendChild(button);
+ });
+
+ setText(
+  "nextQuestion",
+  questionIndex===DATA.questions.length-1
+  ? "ابدأ الأسئلة من جديد ↻"
+  : "السؤال التالي ←"
+ );
+}
+
+function nextQuestion(){
+ questionIndex=(questionIndex+1)%DATA.questions.length;
+ renderQuestion();
+}
+
+renderQuestion();
+
+/* رسائل المشاعر */
+
+const moodContainer=$("moods");
+
+DATA.moods.forEach(item=>{
+ const button=document.createElement("button");
+ button.className="btn mood";
+ button.textContent=item[0];
+
+ button.addEventListener("click",()=>{
+  setText("moodMessage",item[1]);
+  $("moodMessage").classList.add("show");
+ });
+
+ moodContainer.appendChild(button);
+});
+
+/* صناديق الذكريات */
+
+const memoryContainer=$("memories");
+const memoryIcons=["💌","🌹","🌙","😂","💋","💜"];
+
+DATA.memories.forEach((item,index)=>{
+ const button=document.createElement("button");
+ button.className="btn memory";
+
+ const icon=document.createElement("span");
+ icon.textContent=memoryIcons[index]||"🎁";
+
+ const title=document.createElement("span");
+ title.textContent=item[0];
+
+ button.append(icon,title);
+
+ button.addEventListener("click",()=>{
+  setText("memoryMessage",item[1]);
+  $("memoryMessage").classList.add("show");
+ });
+
+ memoryContainer.appendChild(button);
+});
+
+/* الأغنية */
+
+const music=$("music");
+
+function toggleMusic(){
+ if(music.paused){
+  music.play().then(()=>{
+   setText("musicButton","❚❚ إيقاف الأغنية");
+  }).catch(()=>{
+   showToast("ضيفي ملف الأغنية باسم song.mp3 الأول ❤️");
+  });
+ }else{
+  music.pause();
+  setText("musicButton","▶ شغّل أغنيتنا");
+ }
+}
+
+music.addEventListener("ended",()=>{
+ setText("musicButton","▶ شغّل أغنيتنا");
+});
+
+music.addEventListener("error",()=>{
+ setText("musicButton","▶ شغّل أغنيتنا");
+});
+
+/* التنبيه */
+
+let toastTimer;
+
+function showToast(message){
+ $("toast").textContent=message;
+ $("toast").style.display="block";
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>{
+  $("toast").style.display="none";
+ },3000);
+}
+
+/* القلوب والبوسات */
+
+const background=$("background");
+const symbols=["♥","♡","💋","❤"];
+
+for(let i=0;i<23;i++){
+ const heart=document.createElement("span");
+ heart.className="floating";
+ heart.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+ heart.style.left=(Math.random()*100)+"%";
+ heart.style.fontSize=(15+Math.random()*21)+"px";
+ heart.style.animationDuration=(9+Math.random()*12)+"s";
+ heart.style.animationDelay=(-Math.random()*18)+"s";
+ background.appendChild(heart);
+}
+
+updatePage();
+</script>
+</body>
+</html>
